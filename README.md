@@ -1,10 +1,16 @@
 [![Build Status](https://travis-ci.org/anbox/anbox-modules.svg?branch=master)](https://travis-ci.org/anbox/anbox-modules)
 
-# Anbox Kernel Modules
+# Legacy Anbox Kernel Modules
 
-This repository contains the kernel modules necessary to run the Anbox
-Android container runtime. They're split out of the original Anbox
-repository to make packaging in various Linux distributions easier.
+This repository contains a renamed binder kernel module necessary to run older
+versions of the Anbox Android container runtime; specifically, this older
+version creates the /dev/binder device.
+
+While newer versions of anbox should be able to use the binder_linux module
+included with newer kernels, some packaged versions of anbox expect
+/dev/binder to exist instead of supporting binderfs.  While not an ideal
+solution, the legacy binder_anbox module can be used in newer kernels with
+these older versions of anbox.
 
 # Install Instruction
 
@@ -29,31 +35,26 @@ You can either run `./INSTALL.sh` script to automate the installation steps or f
 * Then copy the module sources to `/usr/src/`:
 
   ```
-  $ sudo cp -rT ashmem /usr/src/anbox-ashmem-1
   $ sudo cp -rT binder /usr/src/anbox-binder-1
   ```
 
 * Finally use `dkms` to build and install:
 
   ```
-  $ sudo dkms install anbox-ashmem/1
   $ sudo dkms install anbox-binder/1
   ```
 
 You can verify by loading these modules and checking the created devices:
 
 ```
-$ sudo modprobe ashmem_linux
-$ sudo modprobe binder_linux
-$ lsmod | grep -e ashmem_linux -e binder_linux
-$ ls -alh /dev/binder /dev/ashmem
+$ sudo modprobe binder_anbox
+$ lsmod | grep -e binder_anbox
+$ ls -alh /dev/binder
 ```
 
 You are expected to see output like:
 
 ```
-binder_linux          114688  0
-ashmem_linux           16384  0
-crw-rw-rw- 1 root root  10, 55 Jun 19 16:30 /dev/ashmem
+binder_anbox          114688  0
 crw-rw-rw- 1 root root 511,  0 Jun 19 16:30 /dev/binder
 ```

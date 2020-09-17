@@ -1,3 +1,10 @@
+anbox-modules (14) focal; urgency=medium
+
+  * ashmem: removed as it is included in newer kernels.
+  * binder: renamed to allow it to be present alongside the newer module.
+
+ -- Ricky Brent <ricky@rickybrent.com> Thu, 17 Sep 2020 02:12:59 -0700
+
 anbox-modules (13) bionic; urgency=medium
 
   * staging: ashmem: Fix SIGBUS crash when traversing mmaped ashmem pages
